@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Library</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="header-title"><i class="fas fa-book"> </i><span style="color: black;">Book</span> <em>Library</em></h1>
+            <form id="book-form">
+                <div class="form-group">
+                    <label for="title">Title</label><br>
+                    <input type="text" id="title" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="author">Author</label><br>
+                    <input type="text" id="author" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="isbn">ISBN</label><br>
+                    <input type="text" id="isbn" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="numofpages">Number of pages</label><br>
+                    <input type="text" id="numofpages" class="form-control">
+                </div>
+                <input type="submit" value="Add Book" class="add-book form-control">
+            </form>
+            <table class="book-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>ISBN#</th>
+                        <th>Number of pages</th>
+                    </tr>
+                </thead>
+                <tbody id="book-list"></tbody>
+            </table>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+    
+</html>
