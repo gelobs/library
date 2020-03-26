@@ -1,6 +1,6 @@
 /* library style */
 .container{
-    width: 700px;
+    width: 800px;
     margin-top: 4px;
     margin-left: auto;
     margin-right: auto;
@@ -42,8 +42,44 @@
     border-collapse: collapse;
     border: 1px solid #ccc;
     width: 100%;
+    text-align: center;
 }
 
 tr:nth-child(even){
-    background-color: #f2f2f2
+    background-color: rgb(206, 200, 200);
+}
+
+.delete-button{
+    text-align: center;
+    color: white;
+    background-color: red;
+    border-radius: 2px;
+    border-style: groove;
+    border-width: 1px;
+    border-color: black;
+    width: 100%;
+}
+
+.delete-button:hover{
+    background-color: rgb(199, 36, 36);
+}
+
+.alert-danger{
+    width: 100%;
+    background-color: red;
+    color: white;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    /* font-style: italic; */
+    font-weight: lighter;
+}
+
+.alert-success{
+    width: 100%;
+    background-color: green;
+    color: white;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    /* font-style: italic; */
+    font-weight: lighter;
 }
