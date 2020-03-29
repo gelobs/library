@@ -2,7 +2,6 @@
 // Get input
 document.querySelector('#book-form').addEventListener('submit', (e) => {
     e.preventDefault();
-    // console.log(e);
 
     // Get form values
     const title = document.querySelector('#title').value;
@@ -29,8 +28,9 @@ document.querySelector('#book-form').addEventListener('submit', (e) => {
         // Clear form fields
         UI.clearFields();
 
-        // Checkbox
-
+        // Refresh page to get checkbox working
+        // when initializing a book
+        location.reload();
     }
 });
 // Event: Remove a book
@@ -48,30 +48,29 @@ document.querySelector('#book-list').addEventListener('click', (e) => {
 });
 
 // Event: Read status check box
-// window.addEventListener('DOMContentLoaded', (event) => {
-//     var boxes = document.querySelectorAll("input[type='checkbox']");
-//     boxes.forEach((box) => {
-//         box.addEventListener('change', (e) => {
-//             books = Store.getBooks();
-//             books.forEach((book) => {
-//                 console.log(book);
-//                 // ISBN
-//                 let isbn = e.target.parentElement.previousElementSibling.previousElementSibling.innerText;
-//                 if(e.target.checked && (isbn == book.isbn)){
-//                     book.status = true;
-//                     console.log(book.status);
-//                 }else if(!e.target.checked && (isbn == book.isbn)){
-//                     book.status = false;
-//                     console.log(book.status);
-//                 }
-//                 // localStorage.setItem(box.checked, book.status);
-//                 // Add new read status to storage
-//                 Store.removeBook(isbn);
-//                 Store.addBook(book);
-//             });
-//         })
-//     })
-// });
+window.addEventListener('DOMContentLoaded', (event) => {
+    var boxes = document.querySelectorAll("input[type='checkbox']");
+    boxes.forEach((box) => {
+        box.addEventListener('change', (e) => {
+            books = Store.getBooks();
+            books.forEach((book) => {
+                // ISBN
+                let isbn = e.target.parentElement.previousElementSibling.previousElementSibling.innerText;
+                if(e.target.checked && (isbn == book.isbn)){
+                    book.status = true;
+                }else if(!e.target.checked && (isbn == book.isbn)){
+                    book.status = false;
+                }
+                // localStorage.setItem(box.checked, book.status);
+                // Add new read status to storage
+                Store.removeBook(book.isbn);
+                Store.addBook(book);
+                
+            });
+        })
+    })
+
+});
 
 // Book constructor
 function Book(title, author, isbn, numOfPages){
@@ -81,9 +80,18 @@ function Book(title, author, isbn, numOfPages){
     this.numOfPages = numOfPages;
 }
 
-// Add method to Book object prototype
-Book.prototype.status = function(){
-    
+// Load read status from storage
+function loadReadStatus(){
+    const books = Store.getBooks();
+    books.forEach((book) => {
+        let boxes = document.querySelectorAll("input[type='checkbox']");
+        boxes.forEach((box) => {
+            let isbn = box.parentElement.previousElementSibling.previousElementSibling.textContent;
+            if (isbn == book.isbn){
+                box.checked = book.status;
+            }
+        }); 
+    });
 }
 
 // UI object
@@ -171,3 +179,4 @@ var Store = {
 
 // Event: Display books
 document.addEventListener('DOMContentLoaded', UI.displayBooks());
+document.addEventListener('DOMContentLoaded', loadReadStatus());
