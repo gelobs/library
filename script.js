@@ -42,53 +42,53 @@ document.querySelector('#book-list').addEventListener('click', (e) => {
     // Delete book from UI
     if(e.target.className == "delete-button"){
         UI.deleteBook(e.target);
+        UI.showAlert('Book removed', 'success');
     }
     
 });
 
 // Event: Read status check box
-window.addEventListener('DOMContentLoaded', (event) => {
-    var boxes = document.querySelectorAll("input[type='checkbox']");
-    boxes.forEach((box) => {
-        box.addEventListener('change', (e) => {
-            books = Store.getBooks();
-            books.forEach((book) => {
-                console.log(book);
-                // ISBN
-                let isbn = e.target.parentElement.previousElementSibling.previousElementSibling.innerText;
-                if(e.target.checked && (isbn == book.isbn)){
-                    book.status = true;
-                    console.log(book.status);
-                }else if(!e.target.checked && (isbn == book.isbn)){
-                    book.status = false;
-                    console.log(book.status);
-                }
-                // localStorage.setItem(box.checked, book.status);
-                // Add new read status to storage
-                Store.removeBook(isbn);
-                Store.addBook(book);
-            });
-        })
-    })
-});
+// window.addEventListener('DOMContentLoaded', (event) => {
+//     var boxes = document.querySelectorAll("input[type='checkbox']");
+//     boxes.forEach((box) => {
+//         box.addEventListener('change', (e) => {
+//             books = Store.getBooks();
+//             books.forEach((book) => {
+//                 console.log(book);
+//                 // ISBN
+//                 let isbn = e.target.parentElement.previousElementSibling.previousElementSibling.innerText;
+//                 if(e.target.checked && (isbn == book.isbn)){
+//                     book.status = true;
+//                     console.log(book.status);
+//                 }else if(!e.target.checked && (isbn == book.isbn)){
+//                     book.status = false;
+//                     console.log(book.status);
+//                 }
+//                 // localStorage.setItem(box.checked, book.status);
+//                 // Add new read status to storage
+//                 Store.removeBook(isbn);
+//                 Store.addBook(book);
+//             });
+//         })
+//     })
+// });
 
-// Book class
-class Book {
-    constructor(title, author, isbn, numOfPages) {
-        this.title = title;
-        this.author = author;
-        this.isbn = isbn;
-        this.numOfPages = numOfPages;
-        // Book read status
-        this.status = false;
-    }
+// Book constructor
+function Book(title, author, isbn, numOfPages){
+    this.title = title;
+    this.author = author;
+    this.isbn = isbn;
+    this.numOfPages = numOfPages;
 }
 
-// UI class
-class UI{
+// Add method to Book object prototype
+Book.prototype.status = function(){
     
-    // Add book to library
-    static addBookToLibrary(book){
+}
+
+// UI object
+var UI = {
+    addBookToLibrary: function(book){
         const list = document.querySelector('#book-list');
         const row = document.createElement('tr');
         row.innerHTML = `<td>${book.title}</td>
@@ -98,20 +98,17 @@ class UI{
                          <td><input type='checkbox'></input></td>
                          <td><button class='delete-button'>X</button></td>`
         ;
-        list.appendChild(row);    
-                  
-    }
+        list.appendChild(row);                  
+    },
 
-    // Display books
-    static displayBooks(){
+    displayBooks: function(){
         const books = Store.getBooks();
         books.forEach(book => {         
             UI.addBookToLibrary(book);
-        })
-    }
+        });
+    },
 
-    // Show alert
-    static showAlert(message, className){
+    showAlert: function(message, className){
         const div = document.createElement('div');
         div.className = `alert-${className}`;
         div.appendChild(document.createTextNode(message));
@@ -120,39 +117,23 @@ class UI{
         container.insertBefore(div, form);
         // Vanish in 3 seconds
         setTimeout(() => document.querySelector(`.alert-${className}`).remove(), 3000);
-    }
+    },
 
-    // Clear fields
-    static clearFields(){
+    clearFields: function (){
         document.querySelector('#title').value='';
         document.querySelector('#author').value='';
         document.querySelector('#isbn').value='';
         document.querySelector('#numofpages').value='';
-    }
+    },
 
-    // Delete book
-    static deleteBook(book){
+    deleteBook: function(book){
         book.parentElement.parentElement.textContent='';
     }
+};
 
-    // Display if book is read
-    static isRead(){
-        // let boxes = document.querySelectorAll("input[type='checkbox']");
-        // let books = Store.getBooks();
-        // books.forEach((book) => {
-        //     boxes.forEach((box) => {
-        //         // ISBN
-        //         console.log(box);
-        //         let isbn = box.parentElement.previousElementSibling.previousElementSibling.innerText;
-        //         box.checked = book.status;
-        //     });
-        // });
-    }
-}
-
-// Store class: Handles storage
-class Store {
-    static getBooks() {
+// Store object: handles storage
+var Store = {
+    getBooks: function(){
         let books;
         if(localStorage.getItem('books')===null){
             books = [];
@@ -162,18 +143,18 @@ class Store {
         }
 
         return books;
-    }
+    },
 
-    static addBook(book){
+    addBook: function(book){
         // Get local storage books
         const books = Store.getBooks();
 
         // Add book to storage
         books.push(book);
-        localStorage.setItem('books', JSON.stringify(books));
-    }
+        localStorage.setItem('books', JSON.stringify(books));     
+    },
 
-    static removeBook(isbn){
+    removeBook: function(isbn){
         // Get local storage books
         const books = Store.getBooks();
 
@@ -184,10 +165,9 @@ class Store {
             }
         });
 
-        localStorage.setItem('books', JSON.stringify(books));
+        localStorage.setItem('books', JSON.stringify(books));        
     }
-
 }
 
 // Event: Display books
-document.addEventListener('DOMContentLoaded', UI.displayBooks);
+document.addEventListener('DOMContentLoaded', UI.displayBooks());
